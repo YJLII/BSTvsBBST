@@ -4,7 +4,7 @@
 #ifndef max
 #define max(a,b)  (((a) > (b)) ? (a) : (b))
 #endif
-
+#define N 100000
 struct BinarySearchTreeNode {
     int data;
     struct BinarySearchTreeNode* left;
@@ -25,6 +25,15 @@ struct BinarySearchTreeNode* BSTFind(struct BinarySearchTreeNode* root, int data
         return BSTFind(root->left, data);
     else if (data > root->data)
         return BSTFind(root->right, data);
+    return root;
+}
+struct AVLTreeNode* AVLFind(struct AVLTreeNode* root, int data) {
+    if (root == NULL)
+        return NULL;
+    if (data < root->data)
+        return AVLFind(root->left, data);
+    else if (data > root->data)
+        return AVLFind(root->right, data);
     return root;
 }
 
@@ -130,27 +139,56 @@ struct AVLTreeNode* AVLInsert(struct AVLTreeNode* root, int data) {
 
 
 void forQuestion01(){
+    clock_t start;
+    clock_t end;
     srand(time(NULL));
     int RandomNumber;
     
     struct BinarySearchTreeNode* BST = NULL;
-    for (int i = 0;i < 10;i++)
+    start = clock();
+    for (int i = 0;i < N;i++)
     { 
         RandomNumber = (rand() * 3) % 100001;
-        printf("Random Number = %d\n", RandomNumber);
+        //printf("Random Number = %d\n", RandomNumber);
         BST=BSTInsert(BST, RandomNumber);
     }
-    printf("Minimum : %d\n",BSTFindMin(BST)->data);
+    end = clock();//시간 측정 종료
+    printf("BST Time: %ld millisec\n\n", end - start);
+
+    //printf("Minimum : %d\n",BSTFindMin(BST)->data);
     
     struct AVLTreeNode* AVL = NULL;
-    for (int i = 0;i < 10;i++)
+    start = clock();
+    for (int i = 0;i < N;i++)
     {
         RandomNumber = (rand() * 3) % 100001;
-        printf("Random Number = %d\n", RandomNumber);
+        //printf("Random Number = %d\n", RandomNumber);
         AVL = AVLInsert(AVL, RandomNumber);
     }
-    printf("Minimum : %d\n", AVLFindMin(AVL)->data);
-    free(BST);
+    end = clock();//시간 측정 종료
+    printf("AVL Time: %ld millisec\n\n", end - start);
+
+    //printf("Minimum : %d\n", AVLFindMin(AVL)->data);
+
+    start = clock();
+    for (int i = 0;i < N;i++)
+    {
+        RandomNumber = (rand() * 3) % 100001;
+        BSTFind(BST, RandomNumber);
+    }
+    end = clock();//시간 측정 종료
+    printf("BST Search Time: %ld millisec\n\n", end - start);
+
+    start = clock();
+    for (int i = 0;i < N;i++)
+    {
+        RandomNumber = (rand() * 3) % 100001;
+        AVLFind(AVL, RandomNumber);
+    }
+    end = clock();//시간 측정 종료
+    printf("AVL Search Time: %ld millisec\n\n", end - start);
+
+    //AVL에서 Find 이렇게 하는게 맞는지 꼭 검색해보기.
 }
 
 int main(void)
