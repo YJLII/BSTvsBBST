@@ -28,6 +28,15 @@ struct BinarySearchTreeNode* BSTFind(struct BinarySearchTreeNode* root, int data
     return root;
 }
 
+struct BinarySearchTreeNode* BSTFindMin(struct BinarySearchTreeNode* root) {
+    if (root == NULL) {
+        return NULL;
+    }
+    else if (root->left == NULL)
+        return root;
+    else
+        return BSTFindMin(root->left);
+}
 
 struct BinarySearchTreeNode* BSTInsert(struct BinarySearchTreeNode* root, int data) {
     if (root == NULL) {
@@ -114,9 +123,16 @@ struct AVLTreeNode* AVLInsert(struct AVLTreeNode* root, int data) {
 
 void forQuestion01(){
     srand(time(NULL));
-    int RandomNumber = (rand() * 3)%100001;
-    printf("%d", RandomNumber);
-
+    int RandomNumber;
+    
+    struct BinarySearchTreeNode* BST = NULL;
+    for (int i = 0;i < 10;i++)
+    { 
+        RandomNumber = (rand() * 3) % 100001;
+        printf("Random Number = %d\n", RandomNumber);
+        BST=BSTInsert(BST, RandomNumber);
+    }
+    printf("Minimum : %d",BSTFindMin(BST)->data);
 }
 
 int main(void)
