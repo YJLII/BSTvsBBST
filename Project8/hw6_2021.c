@@ -1,10 +1,11 @@
 #include <stdio.h>
-#include<time.h>
-#include<malloc.h>
+#include <time.h>
+#include <malloc.h>
 #ifndef max
 #define max(a,b)  (((a) > (b)) ? (a) : (b))
 #endif
 #define N 100000
+#define M 1000
 struct BinarySearchTreeNode {
     int data;
     struct BinarySearchTreeNode* left;
@@ -191,7 +192,54 @@ void forQuestion01(){
     //AVL에서 Find 이렇게 하는게 맞는지 꼭 검색해보기.
 }
 
+void forQuestion02()
+{
+    clock_t start;
+    clock_t end;
+    srand(time(NULL));
+    int RandomNumber;
+    srand(time(NULL));
+    struct BinarySearchTreeNode* BST = NULL;
+    start = clock();
+    for (int i = 1;i <= M;i++)
+    {
+        BST = BSTInsert(BST, i);
+    }
+    end = clock();//시간 측정 종료
+    printf("BST 1~%d Insert Time: %ld millisec\n\n",M ,end - start);
+
+    struct AVLTreeNode* AVL = NULL;
+    start = clock();
+    for (int i = 1;i <= M;i++)
+    {
+        AVL = AVLInsert(AVL, i);
+    }
+    end = clock();//시간 측정 종료
+    printf("AVL 1~%d Insert Time: %ld millisec\n\n", M,end - start);
+    
+    
+    start = clock();
+    for (int i = 1;i <= M;i++)
+    {
+        RandomNumber = rand() % (M+1);
+        BSTFind(BST, RandomNumber);
+    }
+    end = clock();//시간 측정 종료
+    printf("BST Search Time: %ld millisec\n\n", end - start);
+
+    start = clock();
+    for (int i = 1;i <= M;i++)
+    {
+        RandomNumber = rand() % (M+1);
+        AVLFind(AVL, RandomNumber);
+    }
+    end = clock();//시간 측정 종료
+    printf("AVL Search Time: %ld millisec\n\n", end - start);
+
+
+}
 int main(void)
 {
     forQuestion01();
+    forQuestion02();
 }
